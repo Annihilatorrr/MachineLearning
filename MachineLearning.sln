@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LinearRegression", "LinearRegression\LinearRegression.pyproj", "{B1368B43-01A8-4831-B622-54D8EC6CB712}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LogisticRegression", "LogisticRegression\LogisticRegression.pyproj", "{6E4EC8A3-2151-4954-92D9-45183A914FF4}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CovarianceMatrix", "CovarianceMatrix\CovarianceMatrix.pyproj", "{1F4F6D9A-A875-49B8-98D0-7831B224D0FA}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Likelihood", "Likelihood\Likelihood.pyproj", "{9912E786-399F-4FCB-8B24-884C52BE1020}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1368B43-01A8-4831-B622-54D8EC6CB712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1368B43-01A8-4831-B622-54D8EC6CB712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4EC8A3-2151-4954-92D9-45183A914FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4EC8A3-2151-4954-92D9-45183A914FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4F6D9A-A875-49B8-98D0-7831B224D0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4F6D9A-A875-49B8-98D0-7831B224D0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9912E786-399F-4FCB-8B24-884C52BE1020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9912E786-399F-4FCB-8B24-884C52BE1020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {743CC9B9-FFA6-40E3-99C1-823744FB82B7}
+	EndGlobalSection
+EndGlobal
