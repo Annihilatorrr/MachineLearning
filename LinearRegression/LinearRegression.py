@@ -8,7 +8,7 @@ def main():
     pd.set_option('display.max_columns', 500)
     pd.set_option('display.width', 10000)
     model = LinearRegression()
-    usa_housing = pd.read_csv('USA_Housing.csv').head(10)
+    usa_housing = pd.read_csv('USA_Housing.csv').head(1000)
     print("All columns:", usa_housing.columns.values)
     x_values = usa_housing[['Avg. Area Income', 'Avg. Area House Age', 'Avg. Area Number of Rooms',
                'Avg. Area Number of Bedrooms', 'Area Population']]
@@ -22,7 +22,7 @@ def main():
     print("Length of y_train:", len(y_train))
     print("Length of y_test:", len(y_test))
     
-    print("Test ratio:", len(x_test)/(len(x_train)+len(x_test)))
+    print("Test/total ratio:", len(x_test)/(len(x_train)+len(x_test)))
     model.fit(x_train, y_train)
     predictions = model.predict(x_test)
 
