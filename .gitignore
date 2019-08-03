@@ -1,2 +1,10 @@
 .vs/
 Matplotlib/__pycache__/
+ML.App/Debug/
+ML.App/x64/
+*.exe
+*.ilk
+*.pdb
+*.user
+MLLib/x64/
+x64/
