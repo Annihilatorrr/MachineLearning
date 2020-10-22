@@ -8,10 +8,11 @@ double LinearRegression::computeErrorForPoints(const std::vector<double>& thetas
     for (const auto& point : points)
     {
         double diff = point.getY();
-        int index{};
-        for (auto x : point.getXs())
+        const auto& xValues = point.getXs();
+        unsigned int index{};
+        for (auto x : xValues)
         {
-            if (index)
+            if (index>0)
                 diff -= thetas[index] * x;
             else
                 diff -= (thetas[index]);
@@ -28,7 +29,7 @@ double partialDiff(const MultiPoint& point, const std::vector<double>& thetas, i
     const int dimension = xVars.size();
 
     //(y - theta0 - theta1*x1 - ... - thetaN*xN)
-    double diffValue = point.getY() - thetas[0] * (1.0);
+    double diffValue = point.getY() - thetas[0];
 
     for (int i = 0; i < dimension; ++i)
     {
@@ -36,13 +37,16 @@ double partialDiff(const MultiPoint& point, const std::vector<double>& thetas, i
     }
 
     // multiple by 1 for partial diff theta0 or by x_i if partial diff theta_i
-    diffValue *= thetaIndex != 0 ? xVars[thetaIndex - 1] : 1;
+    if (thetaIndex != 0)
+    {
+        diffValue *= xVars[thetaIndex - 1];
+    }
 
     return diffValue * (-2.0 / n);
 }
 std::vector<double> LinearRegression::calculateStepGradient(const std::vector<double>& thetas, const std::vector<MultiPoint>& points, double learningRate)
 {
-    std::vector<double> gradientOfThetaList(thetas.size());
+    std::vector<double> gradientOfThetaList(thetas.size(), 0.0);
 
     // double multiplier = 1.0/points.size(); // 2.0 is here for the sake of optimization, it comes from derivative of squared variable
 
