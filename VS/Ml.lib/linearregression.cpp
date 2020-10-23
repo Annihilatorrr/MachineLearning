@@ -84,7 +84,7 @@ std::vector<double> LinearRegression::calculateParameters(const std::vector<Mult
         i++;
         thetas = calculateStepGradient(thetas, points, learningRate);
         double currentError = computeErrorForPoints(thetas, points);
-        double error = abs(currentError - lastError);
+        double error = std::abs(currentError - lastError);
         //qDebug() << "error" << error << thetas;
         if (error < 0.0000001)
             break;
