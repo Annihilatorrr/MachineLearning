@@ -1,6 +1,6 @@
 LIBS = -L../Ml.lib -lml
 CPPFLAGS = -I ../Ml.lib 
-CXXLAGS = -Wall 
+CXXLAGS = -Wall -W 
 OBJFILES = main.o
 TARGET   = mltest
 all: $(TARGET)
