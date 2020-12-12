@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="linearregression.h" />
     <ClInclude Include="multipoint.h" />

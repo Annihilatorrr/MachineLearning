@@ -12,10 +12,14 @@ double LinearRegression::computeErrorForPoints(const std::vector<double>& thetas
         unsigned int index{};
         for (auto x : xValues)
         {
-            if (index>0)
+            if (index > 0)
+            {
                 diff -= thetas[index] * x;
+            }
             else
+            {
                 diff -= (thetas[index]);
+            }
             ++index;
         }
         totalError += diff * diff;
@@ -23,7 +27,7 @@ double LinearRegression::computeErrorForPoints(const std::vector<double>& thetas
     return totalError / points.size();
 }
 
-double partialDiff(const MultiPoint& point, const std::vector<double>& thetas, int n, int thetaIndex)
+double LinearRegression::partialDiff(const MultiPoint& point, const std::vector<double>& thetas, int countOfPoints, int thetaIndex)
 {
     const auto& xVars = point.getXs();
     const int dimension = xVars.size();
@@ -42,21 +46,19 @@ double partialDiff(const MultiPoint& point, const std::vector<double>& thetas, i
         diffValue *= xVars[thetaIndex - 1];
     }
 
-    return diffValue * (-2.0 / n);
+    return diffValue * (-2.0 / countOfPoints);
 }
 std::vector<double> LinearRegression::calculateStepGradient(const std::vector<double>& thetas, const std::vector<MultiPoint>& points, double learningRate)
 {
     std::vector<double> gradientOfThetaList(thetas.size(), 0.0);
 
-    // double multiplier = 1.0/points.size(); // 2.0 is here for the sake of optimization, it comes from derivative of squared variable
-
-    int n = points.size();
+    const int countOfPoints = points.size();
     for (const auto& point : points)
     {
         int thetaIndex{};
         for (auto& gradientOfTheta : gradientOfThetaList)
         {
-            auto partDiff = partialDiff(point, thetas, n, thetaIndex);
+            auto partDiff = partialDiff(point, thetas, countOfPoints, thetaIndex);
             gradientOfTheta += partDiff;
             ++thetaIndex;
         }
@@ -68,7 +70,6 @@ std::vector<double> LinearRegression::calculateStepGradient(const std::vector<do
         ++gradientIndex;
     }
 
-    //qDebug() << "==============";
     return gradientOfThetaList;
 }
 std::vector<double> LinearRegression::calculateParameters(const std::vector<MultiPoint>& points, double learningRate)
@@ -83,22 +84,15 @@ std::vector<double> LinearRegression::calculateParameters(const std::vector<Mult
     {
         i++;
         thetas = calculateStepGradient(thetas, points, learningRate);
-        double currentError = computeErrorForPoints(thetas, points);
-        double error = std::abs(currentError - lastError);
-        //qDebug() << "error" << error << thetas;
-        if (error < 0.0000001)
+        const double currentError = computeErrorForPoints(thetas, points);
+        const double eps = std::abs(currentError - lastError);
+        
+        if (eps < 0.0000001)
+        {
             break;
+        }
 
         lastError = currentError;
-
-        //if (!(i % 10000))
-        //{
-        //    for (const auto& grad : thetas)
-        //    {
-        //        std::cout << grad << " ";
-        //    }
-        //    std::cout << std::endl;
-        //}
 
     } while (true);
     return thetas;

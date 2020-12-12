@@ -1,5 +1,4 @@
 #include <iomanip>
-#include <tuple>
 #include <iostream>
 
 #include "../Ml.lib/linearregression.h"
@@ -24,6 +23,9 @@ void testLinearRegression()
     auto th = lr.calculateParameters(points, 0.0001);
 
     int thetaIndex{};
+
+    std::cout << "Initial values: 2.4 3.3 3.7 0.6" << std::endl;
+    std::cout << "Calculated values:" << std::endl;
     for (const auto& grad : th)
     {
         std::cout << std::setw(14) << "theta #" << thetaIndex++;
@@ -32,7 +34,7 @@ void testLinearRegression()
 
     for (const auto& grad : th)
     {
-        std::cout << std::setw(14) << grad;
+        std::cout << std::setw(15) << grad;
     }
     std::cout << std::endl;
 
@@ -40,4 +42,6 @@ void testLinearRegression()
 int main()
 {
     testLinearRegression();
+
+    return 0;
 }
