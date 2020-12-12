@@ -1,17 +1,26 @@
 #pragma once
 #include <vector>
+#include <iostream>
 #include "definitions.h"
 #include "multipoint.h"
 
-class EXPORT LinearRegression
+template <typename GRAD> class EXPORT LinearRegression
 {
-    double partialDiff(const MultiPoint& point, const std::vector<double>& thetas, int countOfPoints, int thetaIndex);
-    double computeErrorForPoints(const std::vector<double>& thetas, const std::vector<MultiPoint>& points);
-    std::vector<double> calculateStepGradient(const std::vector<double>& thetas, const std::vector<MultiPoint>& points, double learningRate);
 public:
 
-    std::vector<double> calculateParameters(const std::vector<MultiPoint>& points, double learningRate);
-    void printThetas(std::vector<double>& thetas) const;
+    std::vector<double> calculateParameters(const std::vector<MultiPoint>& points, double learningRate)
+    {
+        return GRAD::calculateParameters(points, learningRate);
+    }
+
+    void printThetas(std::vector<double>& thetas) const
+    {
+        for (auto theta : thetas)
+        {
+            std::cout << theta << " ";
+        }
+        std::cout << std::endl;
+    }
 
 };
 

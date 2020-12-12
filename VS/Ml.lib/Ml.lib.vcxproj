@@ -153,12 +153,18 @@
   <ItemGroup>
     <ClInclude Include="definitions.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="gradientdescent.h" />
+    <ClInclude Include="stochasticgradientdescent.h" />
     <ClInclude Include="linearregression.h" />
     <ClInclude Include="multipoint.h" />
+    <ClInclude Include="randomgenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="gradientdescent.cpp" />
+    <ClCompile Include="stochasticgradientdescent.cpp" />
     <ClCompile Include="linearregression.cpp" />
+    <ClCompile Include="randomgenerator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
