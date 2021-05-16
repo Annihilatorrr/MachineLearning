@@ -36,6 +36,9 @@
     <ClInclude Include="stochasticgradientdescent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="decisiontree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stochasticgradientdescent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="decisiontree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,27 +2,27 @@
 
 std::vector<double> GradientDescent::calculateGradients(const std::vector<double>& thetas, const std::vector<MultiPoint>& points, double learningRate)
 {
-    std::vector<double> gradients(thetas.size(), 0.0);
+    std::vector<double> gradient(thetas.size(), 0.0);
 
     const int countOfPoints = points.size();
     for (const auto& point : points)
     {
         int thetaIndex{};
-        for (auto& gradient : gradients)
+        for (auto& partDerivative : gradient)
         {
-            const auto partDiff = partialDiff(point, thetas, countOfPoints, thetaIndex);
-            gradient += partDiff;
+            partDerivative += partialDiffWithRespectToTheta(point, thetas, countOfPoints, thetaIndex);
             ++thetaIndex;
         }
     }
-    int gradientIndex{};
-    for (auto& gradient : gradients)
+    int partDerivativeIndex{};
+    for (auto& partDerivative : gradient)
     {
-        gradient = thetas[gradientIndex] - learningRate * gradient;
-        ++gradientIndex;
+        // minus because we need to go in the direction where loss function has minimum
+        partDerivative = thetas[partDerivativeIndex] - learningRate * partDerivative;
+        ++partDerivativeIndex;
     }
 
-    return gradients;
+    return gradient;
 }
 
 double GradientDescent::computeError(const std::vector<double>& thetas, const std::vector<MultiPoint>& points)
@@ -30,35 +30,29 @@ double GradientDescent::computeError(const std::vector<double>& thetas, const st
     double totalError = 0;
     for (const auto& point : points)
     {
-        double diff = point.getY();
+        const double realY = point.getY();
+        double calculatedY{};
         const auto& xValues = point.getXs();
         unsigned int index{};
         for (auto x : xValues)
         {
-            if (index > 0)
-            {
-                diff -= thetas[index] * x;
-            }
-            else
-            {
-                diff -= (thetas[index]);
-            }
+            calculatedY += (index > 0) ? thetas[index] * x : thetas[index];
             ++index;
         }
-        totalError += diff * diff;
+        totalError += (realY - calculatedY) * (realY - calculatedY);
     }
     return totalError / points.size();
 }
 
-double GradientDescent::partialDiff(const MultiPoint& point, const std::vector<double>& thetas, int countOfPoints, int thetaIndex)
+double GradientDescent::partialDiffWithRespectToTheta(const MultiPoint& point, const std::vector<double>& thetas, int countOfPoints, int thetaIndex)
 {
     const auto& xVars = point.getXs();
-    const int dimension = xVars.size();
+    const int countOfThetasHavingX = xVars.size();
 
     //(y - theta0 - theta1*x1 - ... - thetaN*xN)
     double diffValue = point.getY() - thetas[0];
 
-    for (int i = 0; i < dimension; ++i)
+    for (int i = 0; i < countOfThetasHavingX; ++i)
     {
         diffValue -= thetas[i + 1] * xVars[i];
     }
@@ -74,9 +68,9 @@ double GradientDescent::partialDiff(const MultiPoint& point, const std::vector<d
 
 std::vector<double> GradientDescent::calculateParameters(const std::vector<MultiPoint>& points, double learningRate)
 {
-    // initial thetas are zeros, count of thetas is 1 more than point dimension
-    // for example: y = th0 + x1*th1 + x2*th2
-    std::vector<double> thetas(points[0].getDimension() + 1);
+    // initial thetas are zeros, count of thetas is dimension
+    // for example: y = th0 + x1*th1 + x2*th2. Here Point dimension is 3
+    std::vector<double> thetas(points[0].getDimension());
 
     double lastError{};
     static int i = 0;

@@ -1,10 +1,47 @@
 #include "stochasticgradientdescent.h"
 
+std::vector<double> StochasticGradientDescent::calculateGradients(const std::vector<double>& thetas, const MultiPoint& point, double learningRate)
+{
+    std::vector<double> gradient(thetas.size(), 0.0);
+
+    const int countOfPoints = 1; // for stochastic GD we need only one point
+
+    int thetaIndex{};
+    for (auto& partDerivative : gradient)
+    {
+        partDerivative += partialDiff(point, thetas, countOfPoints, thetaIndex);
+        ++thetaIndex;
+    }
+    int partDerivativeIndex{};
+    for (auto& partDerivative : gradient)
+    {
+        partDerivative = thetas[partDerivativeIndex] - learningRate * partDerivative;
+        ++partDerivativeIndex;
+    }
+
+    return gradient;
+}
+
+double StochasticGradientDescent::computeError(const std::vector<double>& thetas, const MultiPoint& point)
+{
+    double totalError = 0;
+    double diff = point.getY();
+    const auto& xValues = point.getXs();
+    unsigned int index{};
+    for (auto x : xValues)
+    {
+        diff -= (index > 0) ? thetas[index] * x : thetas[index];
+        ++index;
+    }
+    totalError += diff * diff;
+    return totalError;
+}
+
 std::vector<double> StochasticGradientDescent::calculateParameters(const std::vector<MultiPoint>& points, double learningRate)
 {
     // initial thetas are zeros, count of thetas is 1 more than point dimension
     // for example: y = th0 + x1*th1 + x2*th2
-    std::vector<double> thetas(points[0].getDimension() + 1);
+    std::vector<double> thetas(points[0].getDimension());
     RandomGenerator rnd;
     const auto lastIndexOfPoints = points.size() - 1;
     double lastError{};
@@ -21,51 +58,7 @@ std::vector<double> StochasticGradientDescent::calculateParameters(const std::ve
     return thetas;
 }
 
-std::vector<double> StochasticGradientDescent::calculateGradients(const std::vector<double>& thetas,
-                                                                   const MultiPoint& point, double learningRate)
-{
-    std::vector<double> gradients(thetas.size(), 0.0);
 
-    const int countOfPoints = 1;
-
-    int thetaIndex{};
-    for (auto& gradient : gradients)
-    {
-        const auto partDiff = partialDiff(point, thetas, countOfPoints, thetaIndex);
-        gradient += partDiff;
-        ++thetaIndex;
-    }
-    int gradientIndex{};
-    for (auto& gradient : gradients)
-    {
-        gradient = thetas[gradientIndex] - learningRate * gradient;
-        ++gradientIndex;
-    }
-
-    return gradients;
-}
-
-double StochasticGradientDescent::computeError(const std::vector<double>& thetas, const MultiPoint& point)
-{
-    double totalError = 0;
-    double diff = point.getY();
-    const auto& xValues = point.getXs();
-    unsigned int index{};
-    for (auto x : xValues)
-    {
-        if (index > 0)
-        {
-            diff -= thetas[index] * x;
-        }
-        else
-        {
-            diff -= (thetas[index]);
-        }
-        ++index;
-    }
-    totalError += diff * diff;
-    return totalError;
-}
 
 double StochasticGradientDescent::partialDiff(const MultiPoint& point, const std::vector<double>& thetas, int countOfPoints, int thetaIndex)
 {

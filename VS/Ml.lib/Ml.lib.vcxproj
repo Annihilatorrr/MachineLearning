@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="decisiontree.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gradientdescent.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="randomgenerator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="decisiontree.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="gradientdescent.cpp" />
     <ClCompile Include="stochasticgradientdescent.cpp" />
