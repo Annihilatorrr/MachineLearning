@@ -147,112 +147,90 @@ std::vector<Banknote> readData(const char* fileName)
 }
 
 typedef double Banknote::* ptrToDbl;
-std::tuple<std::vector<Banknote>, std::vector<Banknote>> splitBy(std::vector<Banknote>& objects, ptrToDbl field, double referenceValue)
+std::vector<std::vector<Banknote>> splitBy(std::vector<Banknote>& objects, ptrToDbl field, double referenceValue)
 {
-    std::vector<Banknote> first;
-    std::vector<Banknote> second;
+    std::vector<std::vector<Banknote>> splits(2);
     for (auto& b : objects)
     {
         if (b.*field < referenceValue)
         {
-            first.push_back(b);
+            splits[0].push_back(b);
         }
         else
         {
-            second.push_back(b);
+            splits[1].push_back(b);
         }
     }
-    return { first, second };
+    return splits;
 }
 
 struct Spliter
 {
-    double gini;
+    double gini = 99.0;
     double refVal;
 };
 void testDesicionTree(std::vector<Banknote>& records)
 {
     using ptrToDoubleSplitter = std::tuple<std::vector<Banknote>, std::vector<Banknote>>(std::vector<Banknote>&, ptrToDbl, double);
-    std::vector<ptrToDbl> splitters;
-    splitters.push_back(&Banknote::varianceOfWavelet);
-    splitters.push_back(&Banknote::skewnessOfWavelet);
-    splitters.push_back(&Banknote::kurtosisOfWavelet);
-    splitters.push_back(&Banknote::entropyOfImage);
+    std::vector<ptrToDbl> attributes;
+    attributes.push_back(&Banknote::varianceOfWavelet);
+    attributes.push_back(&Banknote::skewnessOfWavelet);
+    attributes.push_back(&Banknote::kurtosisOfWavelet);
+    attributes.push_back(&Banknote::entropyOfImage);
 
-    
-    
-    std::cout << "====================" << std::endl;
-    std::cout << "varianceOfWavelet" << std::endl;
-    std::cout << "skewnessOfWavelet" << std::endl;
-    std::cout << "kurtosisOfWavelet" << std::endl;
-    std::cout << "entropyOfImage" << std::endl;
-    std::cout << "====================" << std::endl;
     std::cout << std::endl;
     std::map<int, Spliter> giniMap{ {0, {99, 99}}, {1, {99, 99}}, {2, {99, 99}}, {3, {99, 99}} };
     int splitterIndex{};
     const double countOfLessLeft = std::count_if(records.begin(), records.end(), [](const auto& b) {return b.varianceOfWavelet <= 0.3299; });
-    for (const auto& splitter : splitters)
+    const auto recordsSize = records.size();
+    for (const auto& attr : attributes)
     {
-        for (const auto rec: records)
+        for (const auto& record: records)
         {
             double giniParent{};
-            std::vector<int>classValues{ 0, 1 };
 
-            auto result = splitBy(records, splitter, rec.*splitter);
-            auto& left = std::get<0>(result);
-            auto& right = std::get<1>(result);
-
-            if (rec.*splitter >=0.32 && rec.*splitter < 0.33)
+            if (record.*attr >=0.32 && record.*attr < 0.33)
             {
                 int r = 0;
             }
-
-            double giniLeft{};
-            const auto leftSize = !left.empty() ? left.size() : 0;
-            const double countOf0Left = std::count_if(left.begin(), left.end(), [](const auto& b) {return b.classification == 0; });
-            const double countOf1Left = left.size() - countOf0Left;
-            if (leftSize)
+            auto splittedResult = splitBy(records, attr, record.*attr);
+            for (const auto& group : splittedResult)
             {
-                double p0 = (countOf0Left / leftSize);
-                double p1 = (countOf1Left / leftSize);
-                giniLeft = 1.0 - (p0*p0 + p1*p1);
-                giniParent += giniLeft * leftSize / records.size();
+                double score{};
+                auto groupSize = !group.empty() ? group.size() : 0;
+                std::vector<int>classValues{ 0, 1 };
+                for (const auto classValue : classValues)
+                {
+                    const double countOfGivenClassElements = std::count_if(group.begin(), group.end(), [&](const auto& b) {return b.classification == classValue; });
+                    if (groupSize)
+                    {
+                        double p = (countOfGivenClassElements / groupSize);
+                        score += (p * p);
+                    }
+                }
+
+                giniParent += (1 - score) * groupSize / recordsSize;
             }
-
-            double giniRight{};
-            const auto rightSize = !right.empty() ? right.size() : 0;
-            const double countOf0Right = std::count_if(right.begin(), right.end(), [](const auto& b) {return b.classification == 0; });
-            const double countOf1Right = right.size() - countOf0Right;
-
-            if (rightSize)
-            {
-                double p0 = (countOf0Right / rightSize);
-                double p1 = (countOf1Right / rightSize);
-                giniRight = 1.0 - (p0*p0 - p1*p1);
-                giniParent += giniRight * rightSize / records.size();
-            }
-
-            //std::cout << "totalLeft: " << left.size() << ", 0: " << countOf0Left << ", 1: " << countOf1Left << "| ";
-            //std::cout << "totalRight: " << right.size() << ", 0: " << countOf0Right << ", 1: " << countOf1Right << std::endl;
+            
             if (giniMap[splitterIndex].gini > giniParent)
             {
                 giniMap[splitterIndex].gini = giniParent;
-                giniMap[splitterIndex].refVal = rec.*splitter;
-                //std::cout << "splitterIndex: " << splitterIndex << ", Gini parent: " << giniParent << " Gini left: " << giniLeft << " Gini right: " << giniRight << " Value: " << rec.*splitter <<  std::endl;
+                giniMap[splitterIndex].refVal = record.*attr;
             }
         }
         ++splitterIndex;
     }
     auto min = *std::min_element(giniMap.begin(), giniMap.end(), [](const auto& l, const auto& r) { return l.second.gini < r.second.gini; });
-    std::cout << "The best splitter # " << min.first << " at value " << min.second.refVal;
-    if (min.second.gini < 0.22)
+    std::cout << "Splitter x[" << min.first << "] <= " << min.second.refVal;
+    auto finalSplitResult = splitBy(records, attributes[min.first], min.second.refVal);
+    std::cout << " (" << finalSplitResult[0].size() << ", " << finalSplitResult[1].size() << " ) : " << min.second.gini << std::endl;
+    if (min.second.gini < 0.1)
     {
         std::cout << "The end\n";
         return;
     }
-    auto result2 = splitBy(records, splitters[min.first], min.second.refVal);
-    testDesicionTree(std::get<0>(result2));
-    testDesicionTree(std::get<1>(result2));
+    testDesicionTree(finalSplitResult[0]);
+    testDesicionTree(finalSplitResult[1]);
 }
 
 int main()
