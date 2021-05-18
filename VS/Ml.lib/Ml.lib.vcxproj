@@ -24,6 +24,7 @@
     <ProjectGuid>{eac7dcd5-da5d-4d42-ba96-58d0aeebc698}</ProjectGuid>
     <RootNamespace>Mllib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Mllib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
