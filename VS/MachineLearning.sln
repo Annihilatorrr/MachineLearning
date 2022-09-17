@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ml.app", "Ml.app\Ml.app.vcxproj", "{E2C8E541-C8CA-442A-AB98-82164AB089BC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ml.lib", "Ml.lib\Ml.lib.vcxproj", "{EAC7DCD5-DA5D-4D42-BA96-58D0AEEBC698}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mllib", "Ml.lib\Ml.lib.vcxproj", "{EAC7DCD5-DA5D-4D42-BA96-58D0AEEBC698}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MlinNet.App", "MlinNet.App\MlinNet.App.csproj", "{154550DE-7523-4CE3-AAE7-0400DA15C668}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MlinNet.App", "MlinNet.App\MlinNet.App.csproj", "{154550DE-7523-4CE3-AAE7-0400DA15C668}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.vcxproj", "{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShuntingYardAlgorithm", "ShuntingYardAlgorithm\ShuntingYardAlgorithm.vcxproj", "{61E09D1B-577C-4633-B2CE-59ADE24D2779}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,30 @@ Global
 		{154550DE-7523-4CE3-AAE7-0400DA15C668}.Release|x64.Build.0 = Release|Any CPU
 		{154550DE-7523-4CE3-AAE7-0400DA15C668}.Release|x86.ActiveCfg = Release|Any CPU
 		{154550DE-7523-4CE3-AAE7-0400DA15C668}.Release|x86.Build.0 = Release|Any CPU
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|Any CPU.Build.0 = Debug|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|x64.ActiveCfg = Debug|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|x64.Build.0 = Debug|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|x86.ActiveCfg = Debug|Win32
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Debug|x86.Build.0 = Debug|Win32
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|Any CPU.ActiveCfg = Release|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|Any CPU.Build.0 = Release|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|x64.ActiveCfg = Release|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|x64.Build.0 = Release|x64
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|x86.ActiveCfg = Release|Win32
+		{87559894-ED33-4AF0-BF1D-ED4C3D82D0CD}.Release|x86.Build.0 = Release|Win32
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|Any CPU.Build.0 = Debug|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|x64.ActiveCfg = Debug|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|x64.Build.0 = Debug|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|x86.ActiveCfg = Debug|Win32
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Debug|x86.Build.0 = Debug|Win32
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|Any CPU.ActiveCfg = Release|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|Any CPU.Build.0 = Release|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|x64.ActiveCfg = Release|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|x64.Build.0 = Release|x64
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|x86.ActiveCfg = Release|Win32
+		{61E09D1B-577C-4633-B2CE-59ADE24D2779}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

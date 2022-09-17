@@ -47,7 +47,7 @@ void testLinearRegressionGradientDescent()
         {
             for (int k = 0; k < 10; ++k)
             {
-                points.push_back(MultiPoint(2.4 + 3.3 * i + 3.7 * j + 0.6 * k,
+                points.push_back(MultiPoint(-2.92 - 3.0 * i + 3.0 * j + 0.6 * k,
                     { static_cast<double>(i), static_cast<double>(j), static_cast<double>(k) }));
             }
         }
@@ -235,9 +235,9 @@ void testDesicionTree(std::vector<Banknote>& records)
 
 int main()
 {
-    //testLinearRegressionGradientDescent();
+    testLinearRegressionGradientDescent();
     //testLinearRegressionStochasticGradientDescent();
-    auto recordsX = readData("data_banknote_authentication.txt");
-    testDesicionTree(recordsX);
+    //auto recordsX = readData("data_banknote_authentication.txt");
+    //testDesicionTree(recordsX);
     return 0;
 }
