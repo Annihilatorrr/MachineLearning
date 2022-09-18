@@ -36,9 +36,18 @@
     <ClCompile Include="functionnode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="shuntingyard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shuntingyardfunctionset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shuntingyardconstants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shuntingyard.h">
+    <ClInclude Include="shuntingyardalgo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utility.h">
@@ -57,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="functionnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shuntingyard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shuntingyardfunctionset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shuntingyardconstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

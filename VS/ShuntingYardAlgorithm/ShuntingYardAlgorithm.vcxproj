@@ -144,7 +144,10 @@
     <ClCompile Include="functionnode.cpp" />
     <ClCompile Include="node.cpp" />
     <ClCompile Include="numericnode.cpp" />
+    <ClCompile Include="shuntingyard.cpp" />
     <ClCompile Include="ShuntingYardAlgorithm.cpp" />
+    <ClCompile Include="shuntingyardconstants.cpp" />
+    <ClCompile Include="shuntingyardfunctionset.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +157,9 @@
     <ClInclude Include="node.h" />
     <ClInclude Include="numericnode.h" />
     <ClInclude Include="shuntingyard.h" />
+    <ClInclude Include="shuntingyardalgo.h" />
+    <ClInclude Include="shuntingyardconstants.h" />
+    <ClInclude Include="shuntingyardfunctionset.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
