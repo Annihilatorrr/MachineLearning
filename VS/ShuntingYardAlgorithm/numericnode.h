@@ -12,7 +12,16 @@ public:
 	// return numerical value
 	double eval() const
 	{
-		return Utility::getNumericalVal(_name.c_str());
+		if (Utility::contains<std::string>(ShuntingYardConfigSet::ConstantNames, _name))
+		{
+			return ShuntingYardConfigSet::Constants[_name.c_str()];
+		}
+		if (Utility::contains<std::string>(ShuntingYardConfigSet::getKeys<double>(ShuntingYardConfigSet::Variables),
+		                                   _name))
+		{
+			return ShuntingYardConfigSet::Variables[_name.c_str()];
+		}
+		return std::stod(_name);
 	}
 
 };

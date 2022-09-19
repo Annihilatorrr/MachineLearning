@@ -1,19 +1,24 @@
 #pragma once
 #include "function.h"
 #include "node.h"
-#include "shuntingyardfunctionset.h"
+#include "shuntingyardconfigset.h"
 
-class FuncNode : public Node
+class FunctionNode : public Node
 {
+	bool _isUnary;
+	Func _func;
+
 public:
-	explicit FuncNode(std::string name)
-		: Node(std::move(name), true) {}
+	explicit FunctionNode(std::string name)
+		: Node(std::move(name), true), _isUnary(false)
+	{
+	}
 
 	// set type of function and then assign callback
 	void setUnary(bool isUnary)
 	{
 		_isUnary = isUnary;
-		_func = isUnary ? ShuntingYardFunctionSet::unary_functions[_name] : ShuntingYardFunctionSet::binary_functions[_name];
+		_func = isUnary ? ShuntingYardConfigSet::UnaryFunctions[_name] : ShuntingYardConfigSet::BinaryFunctions[_name];
 	}
 
 	// evaluate
@@ -22,6 +27,9 @@ public:
 		return _func.eval(x, y);
 	}
 
-	bool _isUnary;
-	Func _func;
+	bool isUnary() const
+	{
+		return _isUnary;
+	}
+
 };

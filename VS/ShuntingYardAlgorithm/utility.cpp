@@ -48,34 +48,21 @@ std::string Utility::findElement(const char* eqn, const std::vector<std::string>
 	return "";
 }
 
-double Utility::getNumericalVal(const char* str)
-{
-	if (Utility::contains<std::string>(ShuntingYardFunctionSet::constantNames, str))
-	{
-		return ShuntingYardFunctionSet::constants[str];
-	}
-	if (Utility::contains<std::string>(ShuntingYardFunctionSet::keys<double>(ShuntingYardFunctionSet::variables), str))
-	{
-		return ShuntingYardFunctionSet::variables[str];
-	}
-	return std::stod(str);
-}
-
 bool Utility::isFunction(std::string str)
 {
-	return Utility::contains<std::string>(ShuntingYardFunctionSet::functionNames, str);
+	return contains<std::string>(ShuntingYardConfigSet::FunctionNames, str);
 }
 
 bool Utility::isLeftAssociative(const std::string& str)
 {
-	return ShuntingYardFunctionSet::binary_functions[str]._isLeftAssociative;
+	return ShuntingYardConfigSet::BinaryFunctions[str]._isLeftAssociative;
 }
 
 short Utility::getPrecedence(const std::string& str)
 {
-	if (Utility::contains<std::string>(ShuntingYardFunctionSet::keys(ShuntingYardFunctionSet::binary_functions), str))
+	if (contains<std::string>(ShuntingYardConfigSet::getKeys(ShuntingYardConfigSet::BinaryFunctions), str))
 	{
-		return ShuntingYardFunctionSet::binary_functions[str]._precedence;
+		return ShuntingYardConfigSet::BinaryFunctions[str]._precedence;
 	}
 
 	return 0;

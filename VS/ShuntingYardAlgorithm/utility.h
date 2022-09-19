@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "shuntingyardfunctionset.h"
+#include "shuntingyardconfigset.h"
 
 
 class Utility
@@ -25,8 +25,6 @@ public:
 	static std::string findElement(const char* eqn, const std::vector<std::string>& list);
 
 
-	static double getNumericalVal(const char* str);
-
 	static bool isFunction(std::string str);
 
 	// determine if function is left associative
@@ -37,8 +35,8 @@ public:
 
 	static bool isNumber(const char* str)
 	{
-		return contains<std::string>(ShuntingYardFunctionSet::constantNames, str) ||
-			contains<std::string>(ShuntingYardFunctionSet::keys<double>(ShuntingYardFunctionSet::variables), str) ||
+		return contains<std::string>(ShuntingYardConfigSet::ConstantNames, str) ||
+			contains<std::string>(ShuntingYardConfigSet::getKeys<double>(ShuntingYardConfigSet::Variables), str) ||
 			std::strcmp(str, ".") == 0 ||
 			containsNumbers(str);
 	}

@@ -39,7 +39,7 @@
     <ClCompile Include="shuntingyard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shuntingyardfunctionset.cpp">
+    <ClCompile Include="shuntingyardconfigset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shuntingyardconstants.cpp">
@@ -71,7 +71,7 @@
     <ClInclude Include="shuntingyard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shuntingyardfunctionset.h">
+    <ClInclude Include="shuntingyardconfigset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shuntingyardconstants.h">

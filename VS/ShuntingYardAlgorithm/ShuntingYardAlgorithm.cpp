@@ -10,7 +10,7 @@ int main() {
 
 	//std::cout << "Input equation: ";
 
-	std::string eqn("3+3*2");
+	std::string eqn("1-2");
 	//std::getline(std::cin, eqn);
 
 	ShuntingYard sy;

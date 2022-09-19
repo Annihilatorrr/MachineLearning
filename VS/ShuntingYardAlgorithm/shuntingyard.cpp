@@ -8,6 +8,7 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 
 	std::string obj;
 	Algo::TokenTypes type = Algo::TokenTypes::Undefined;
+	Algo::TokenTypes prevType = Algo::TokenTypes::Undefined; // negative sign detection
 
 	bool acceptDecimal = true;
 	bool acceptNegative = true;
@@ -20,12 +21,11 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 
 		// skip spaces and commas
 		if (currentCharacter == ' ' || currentCharacter == ',') {
-			//prevType = TokenTypes::ELSE;
 			continue;
 		}
 
 		// classify token
-		if (Utility::isNumber(currentCharacter, true, true))
+		if (Utility::isNumber(currentCharacter, acceptDecimal, acceptNegative && (i == 0 || prevType == Algo::TokenTypes::LeftParenth)))
 		{
 			type = Algo::TokenTypes::Constant;
 			if (currentCharacter == '.')
@@ -40,7 +40,7 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 			const int startI = i;
 			if (i < equationLength - 1)
 			{
-				while (Utility::isNumber(equation[i + 1], acceptDecimal, acceptNegative))
+				while (Utility::isNumber(equation[i + 1], acceptDecimal, acceptNegative && (prevType == Algo::TokenTypes::LeftParenth)))
 				{
 					i++;
 					if (i >= equationLength - 1)
@@ -51,7 +51,7 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 			}
 			obj = std::string(equation + startI, i - startI + 1);
 
-			// subtraction sign detection
+			// subtraction only sign detection means it is minus operator, not a negative number
 			if (obj == "-")
 			{
 				type = Algo::TokenTypes::Operator;
@@ -59,15 +59,15 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 		}
 		else
 		{
-			obj = Utility::findElement(equation + i, ShuntingYardFunctionSet::functionNames);
+			obj = Utility::findElement(equation + i, ShuntingYardConfigSet::FunctionNames);
 			if (!obj.empty())
 			{
 				// found valid object
-				type = Utility::contains<char>(ShuntingYardFunctionSet::operators, obj[0]) ? Algo::TokenTypes::Operator : Algo::TokenTypes::Function;
+				type = Utility::contains<char>(ShuntingYardConfigSet::Operators, obj[0]) ? Algo::TokenTypes::Operator : Algo::TokenTypes::Function;
 			}
 			else
 			{
-				obj = Utility::findElement(equation + i, ShuntingYardFunctionSet::constantNames);
+				obj = Utility::findElement(equation + i, ShuntingYardConfigSet::ConstantNames);
 				if (!obj.empty())
 				{
 					// found valid object
@@ -75,17 +75,17 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 				}
 				else
 				{
-					obj = Utility::findElement(equation + i, ShuntingYardFunctionSet::keys<double>(ShuntingYardFunctionSet::variables));
+					obj = Utility::findElement(equation + i, ShuntingYardConfigSet::getKeys<double>(ShuntingYardConfigSet::Variables));
 					if (!obj.empty())
 					{
 						type = Algo::TokenTypes::Constant;
 					}
-					else if (Utility::contains<char>(ShuntingYardFunctionSet::leftBrackets, currentCharacter))
+					else if (Utility::contains<char>(ShuntingYardConfigSet::LeftBrackets, currentCharacter))
 					{
 						type = Algo::TokenTypes::LeftParenth;
 						obj = "(";
 					}
-					else if (Utility::contains<char>(ShuntingYardFunctionSet::rightBrackets, currentCharacter))
+					else if (Utility::contains<char>(ShuntingYardConfigSet::RightBrackets, currentCharacter))
 					{
 						type = Algo::TokenTypes::RightPrenth;
 						obj = ")";
@@ -112,13 +112,13 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 			if (!stack.empty()) {
 				while (
 					(
-						(Utility::contains<std::string>(ShuntingYardFunctionSet::functionNames, last_stack) &&
-							!Utility::contains<char>(ShuntingYardFunctionSet::operators, last_stack[0])) ||
+						(Utility::contains<std::string>(ShuntingYardConfigSet::FunctionNames, last_stack) &&
+							!Utility::contains<char>(ShuntingYardConfigSet::Operators, last_stack[0])) ||
 						Utility::getPrecedence(last_stack) > Utility::getPrecedence(obj) ||
 						((Utility::getPrecedence(last_stack) == Utility::getPrecedence(obj)) &&
 							Utility::isLeftAssociative(last_stack))
 					) &&
-					!Utility::contains<char>(ShuntingYardFunctionSet::leftBrackets, last_stack[0])
+					!Utility::contains<char>(ShuntingYardConfigSet::LeftBrackets, last_stack[0])
 				) {
 					queue.push_back(stack.top());
 					stack.pop();
@@ -144,7 +144,7 @@ std::vector<std::string> ShuntingYard::reversePolishNotation(const char* equatio
 		default:
 			return queue;
 		}
-
+		prevType = type;
 	}
 
 	while (!stack.empty()) {
@@ -160,14 +160,15 @@ Node* ShuntingYard::parse(const std::vector<std::string>& rpn) const
 	std::stack<Node*> stack;
 
 	for (std::string item : rpn) {
-		if (Utility::isNumber(item.c_str()) && item != "-") {
+		if (Utility::isNumber(item.c_str()) && item != "-") 
+		{
 			// push number node
 			stack.push(new NumNode(item));
 		}
 		else {
 			// function
-			FuncNode* f = new FuncNode(item);
-			if (Utility::contains<std::string>(ShuntingYardFunctionSet::keys(ShuntingYardFunctionSet::binary_functions), item)) {
+			FunctionNode* f = new FunctionNode(item);
+			if (Utility::contains<std::string>(ShuntingYardConfigSet::getKeys(ShuntingYardConfigSet::BinaryFunctions), item)) {
 				f->setUnary(false);
 				// set children of node
 				f->_right = stack.top();
@@ -175,7 +176,7 @@ Node* ShuntingYard::parse(const std::vector<std::string>& rpn) const
 				f->_left = stack.top();
 				stack.pop();
 			}
-			else if (Utility::contains<std::string>(ShuntingYardFunctionSet::keys(ShuntingYardFunctionSet::unary_functions), item)) {
+			else if (Utility::contains<std::string>(ShuntingYardConfigSet::getKeys(ShuntingYardConfigSet::UnaryFunctions), item)) {
 				f->setUnary(true);
 				// set child of node
 				f->_left = stack.top();
@@ -185,7 +186,8 @@ Node* ShuntingYard::parse(const std::vector<std::string>& rpn) const
 		}
 	}
 
-	if (stack.empty()) {
+	if (stack.empty()) 
+	{
 		return nullptr;
 	}
 
@@ -194,19 +196,16 @@ Node* ShuntingYard::parse(const std::vector<std::string>& rpn) const
 
 double ShuntingYard::eval(Node* tree)
 {
-	if (tree->_isFunc) {
-		FuncNode* ftree = (FuncNode*)tree;
-		if (ftree->_isUnary) {
+	if (tree->_isFunc) 
+	{
+		FunctionNode* ftree = (FunctionNode*)tree;
+		if (ftree->isUnary()) {
 			// evaluate child recursively and then evaluate with return value
 			return ftree->eval(eval(tree->_left));
 		}
-		else {
-			// evaluate each child recursively and then evaluate with return value
-			return ftree->eval(eval(tree->_left), eval(tree->_right));
-		}
+		// evaluate each child recursively and then evaluate with return value
+		return ftree->eval(eval(tree->_left), eval(tree->_right));
 	}
-	else {
-		// number node
-		return ((NumNode*)tree)->eval();
-	}
+	// number node
+	return ((NumNode*)tree)->eval();
 }
